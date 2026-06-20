@@ -126,7 +126,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## 👤 Author/Contact
 
-**Mohammad**  
+**Mohammad Mohammadi-Manesh**  
 - GitHub: [@m-mohammadimanesh](https://github.com/m-mohammadimanesh)
 - Project Link: [https://porsesh-ai.vercel.app](https://porsesh-ai.vercel.app)
 
@@ -265,7 +265,7 @@ porsesh-ai/
 
 ## 👤 درباره سازنده
 
-**محمد**  
+**محمد محمدی‌منش**  
 - گیت‌هاب: [@m-mohammadimanesh](https://github.com/m-mohammadimanesh)
 - لینک پروژه: [https://porsesh-ai.vercel.app](https://porsesh-ai.vercel.app)
 
