@@ -1,13 +1,16 @@
 import os
-from google import genai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 
 if API_KEY and API_KEY != "your_key_here":
-    client = genai.Client(api_key=API_KEY)
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=API_KEY,
+    )
 else:
     client = None
 
@@ -27,10 +30,12 @@ User Question:
 {query}
 """
     try:
-        response = client.models.generate_content(
-            model='gemini-2.0-flash',
-            contents=prompt
+        response = client.chat.completions.create(
+            model="mistralai/mistral-7b-instruct:free",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
         )
-        return response.text
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error communicating with AI service: {e}"
