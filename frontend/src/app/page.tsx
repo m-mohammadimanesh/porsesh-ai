@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ChatWindow from '@/components/ChatWindow';
 import ChatInput from '@/components/ChatInput';
 import PDFUploader from '@/components/PDFUploader';
+import Footer from '@/components/Footer';
 import { sendMessage } from '@/services/api';
 import { Message } from '@/types';
 
@@ -122,6 +123,7 @@ export default function Home() {
 
         <ChatWindow messages={messages} isLoading={isLoading} />
         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
+        <Footer />
       </div>
 
       {/* Mobile overlay */}
