@@ -31,7 +31,7 @@ User Question:
 """
     try:
         response = client.chat.completions.create(
-            model="google/gemma-3-4b-it:free",
+            model="nvidia/nemotron-ultra-253b-v1:free",
             messages=[
                 {"role": "user", "content": prompt}
             ]
