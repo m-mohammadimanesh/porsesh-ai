@@ -56,7 +56,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 async def chat(request: ChatRequest):
     try:
         context_chunks = vector_service.query_similar_chunks(request.message)
-        answer = ai_service.generate_answer(request.message, context_chunks)
+        answer = ai_service.generate_answer(request.message, context_chunks, request.history)
         
         return ChatResponse(
             answer=answer,

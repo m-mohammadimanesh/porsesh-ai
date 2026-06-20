@@ -11,7 +11,7 @@ if API_KEY and API_KEY != "your_key_here":
 else:
     client = None
 
-def generate_answer(query: str, context: list[str]) -> str:
+def generate_answer(query: str, context: list[str], history: list = []) -> str:
     if client is None:
         return f"Groq AI service not configured yet. Your question was: {query}"
 
@@ -26,12 +26,22 @@ Context:
 User Question:
 {query}
 """
+    
+    messages = []
+    messages.append({
+        "role": "system",
+        "content": "You are Porsesh AI, an intelligent assistant."
+    })
+    
+    for item in history:
+        messages.append({"role": item.role, "content": item.content})
+        
+    messages.append({"role": "user", "content": prompt})
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
+            messages=messages
         )
         return response.choices[0].message.content
     except Exception as e:

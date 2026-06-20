@@ -43,12 +43,19 @@ export default function Home() {
   };
 
   const handleSendMessage = async (text: string) => {
+    const history = messages
+      .filter(m => m.id !== 'init-1')
+      .map(m => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.text
+      }));
+
     const userMessage: Message = { id: Date.now().toString(), text, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(text, sessionId);
+      const response = await sendMessage(text, sessionId, history);
       const aiMessage: Message = { 
         id: (Date.now() + 1).toString(), 
         text: response.answer, 

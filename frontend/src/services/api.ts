@@ -15,13 +15,13 @@ export async function uploadPDF(file: File) {
     return response.json();
 }
 
-export async function sendMessage(message: string, session_id: string) {
+export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = []) {
     const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message, session_id }),
+        body: JSON.stringify({ message, session_id, history }),
     });
     
     if (!response.ok) {
