@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,14 +7,12 @@ load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
 if API_KEY and API_KEY != "your_key_here":
-    genai.configure(api_key=API_KEY)
-    # Using gemini-1.5-flash as the default fast model
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    client = genai.Client(api_key=API_KEY)
 else:
-    model = None
+    client = None
 
 def generate_answer(query: str, context: list[str]) -> str:
-    if model is None:
+    if client is None:
         return f"AI service not configured yet. Your question was: {query}"
 
     context_text = "\n\n".join(context)
@@ -28,5 +26,11 @@ Context:
 User Question:
 {query}
 """
-    response = model.generate_content(prompt)
-    return response.text
+    try:
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=prompt
+        )
+        return response.text
+    except Exception as e:
+        return f"Error communicating with AI service: {e}"
