@@ -33,12 +33,10 @@ Porsesh AI is a full-stack, AI-powered conversational interface designed to act 
 
 ## 🖼️ Screenshots
 
-> *Placeholders for screenshots - Add your images here!*
-
 <p align="center">
-  <img src="https://via.placeholder.com/600x400?text=Light+Mode+Screenshot" alt="Light Mode Screenshot" width="45%" />
+  <img src="./screenshots/lightmode.png" alt="Light Mode Screenshot" width="45%" />
   &nbsp;
-  <img src="https://via.placeholder.com/600x400?text=Dark+Mode+Screenshot" alt="Dark Mode Screenshot" width="45%" />
+  <img src="./screenshots/darkmode.png" alt="Dark Mode Screenshot" width="45%" />
 </p>
 
 ---
@@ -176,9 +174,9 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 > *محل قرارگیری تصاویر - تصاویر خود را اینجا اضافه کنید!*
 
 <p align="center">
-  <img src="https://via.placeholder.com/600x400?text=تصویر+حالت+روشن" alt="تصویر حالت روشن" width="45%" />
+  <img src="./screenshots/lightmode.png" alt="تصویر حالت روشن" width="45%" />
   &nbsp;
-  <img src="https://via.placeholder.com/600x400?text=تصویر+حالت+تاریک" alt="تصویر حالت تاریک" width="45%" />
+  <img src="./screenshots/darkmode.png" alt="تصویر حالت تاریک" width="45%" />
 </p>
 
 ---
