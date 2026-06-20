@@ -24,6 +24,7 @@ Porsesh AI is a full-stack, AI-powered conversational interface designed to act 
 ## ✨ Features
 
 - 💬 **Intelligent Chat:** Real-time conversational AI powered by Groq.
+- 🧠 **Conversation Memory:** The AI retains full context of your chat history for seamless multi-turn conversations.
 - 📄 **PDF Knowledge Extraction:** Upload PDFs and ask targeted questions based on the document's content using ChromaDB vector search.
 - 🌓 **Dark & Light Mode:** Beautiful and responsive UI adapting to system preferences.
 - 🌐 **Bilingual Support:** Built-in support for right-to-left (RTL) Persian typography (Vazirmatn) and English (Inter).
@@ -162,6 +163,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 ## ✨ ویژگی‌ها
 
 - 💬 **چت هوشمند:** گفتگوی لحظه‌ای با هوش مصنوعی قدرتمند با استفاده از API Groq.
+- 🧠 **حافظه مکالمه:** هوش مصنوعی تاریخچه کامل گفتگو را برای مکالمات پیوسته و طبیعی به خاطر می‌سپارد.
 - 📄 **استخراج دانش از PDF:** فایل‌های PDF خود را آپلود کنید و بر اساس محتوای آن مستقیماً سوال بپرسید.
 - 🌓 **حالت تاریک و روشن:** رابط کاربری زیبا و واکنش‌گرا هماهنگ با تنظیمات سیستم.
 - 🌐 **پشتیبانی کامل دوزبانه:** پشتیبانی ساختاری از چیدمان راست‌چین (RTL) و فونت‌های استاندارد فارسی (وزیرمتن) و انگلیسی (Inter).
