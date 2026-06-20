@@ -1,70 +1,49 @@
+> 🌐 Language: **English** | [فارسی](#persian)
+
 <div align="center">
 
-# 🤖 Porsesh AI (پرسش هوش مصنوعی)
+# 🤖 Porsesh AI
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://porsesh-ai.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/m-mohammadimanesh/porsesh-ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![OpenRouter](https://img.shields.io/badge/AI-OpenRouter-FF5A5F?style=for-the-badge)](https://openrouter.ai/)
-
-**A professional, bilingual AI chatbot powered by Nvidia Nemotron Ultra with RAG capabilities for PDF analysis.**
-<br>
-**یک چت‌بات حرفه‌ای و دوزبانه مبتنی بر هوش مصنوعی با قابلیت تحلیل فایل‌های PDF.**
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 </div>
 
 ---
 
-## 📖 About The Project / درباره پروژه
-
-**🇬🇧 English:**
-Porsesh AI is a full-stack, AI-powered conversational interface designed to act as your intelligent assistant. Not only does it offer seamless real-time chatting using state-of-the-art models via OpenRouter (currently powered by Nvidia's Nemotron Ultra), but it also features **Retrieval-Augmented Generation (RAG)**. This allows you to upload any PDF document and instantly ask questions about its content. Built with a stunning dark/light mode interface using Next.js 14 and supported by a robust Python FastAPI backend with ChromaDB vector storage.
-
-**🇮🇷 Persian (فارسی):**
-پرسش AI یک دستیار هوشمند و تمام‌عیار است که نه تنها امکان چت پیشرفته و لحظه‌ای را با استفاده از مدل‌های قدرتمند OpenRouter (مانند Nvidia Nemotron Ultra) فراهم می‌کند، بلکه به لطف سیستم **RAG** امکان آپلود فایل‌های PDF و استخراج پاسخ از محتوای آن‌ها را به شما می‌دهد. این پروژه با رابط کاربری مدرن، پشتیبانی از حالت تاریک/روشن و فونت‌های استاندارد فارسی در Next.js توسعه یافته و از یک بک‌اند قدرتمند با پایتون و FastAPI بهره می‌برد.
+Porsesh AI is a full-stack, AI-powered conversational interface designed to act as your intelligent assistant. Using state-of-the-art models via OpenRouter (powered by Nvidia's Nemotron Ultra) and Retrieval-Augmented Generation (RAG) with ChromaDB, it allows you to upload any PDF document and instantly ask questions about its content.
 
 ---
 
-## ✨ Features / ویژگی‌ها
+## ✨ Features
 
-- 💬 **Intelligent Chat (چت هوشمند):** Real-time conversational AI powered by OpenRouter.
-- 📄 **PDF Knowledge Extraction (تحلیل PDF):** Upload PDFs and ask targeted questions based on the document's content using ChromaDB vector search.
-- 🌓 **Dark & Light Mode (حالت تاریک و روشن):** Beautiful and responsive UI adapting to system preferences.
-- 🌐 **Bilingual Support (دوزبانه):** Built-in support for right-to-left (RTL) Persian typography (Vazirmatn) and English (Inter).
-- 📝 **Markdown & LaTeX Rendering (پشتیبانی از مارک‌داون و ریاضی):** Code highlighting and complex math equations render beautifully right inside the chat.
+- 💬 **Intelligent Chat:** Real-time conversational AI powered by OpenRouter.
+- 📄 **PDF Knowledge Extraction:** Upload PDFs and ask targeted questions based on the document's content using ChromaDB vector search.
+- 🌓 **Dark & Light Mode:** Beautiful and responsive UI adapting to system preferences.
+- 🌐 **Bilingual Support:** Built-in support for right-to-left (RTL) Persian typography (Vazirmatn) and English (Inter).
+- 📝 **Markdown & LaTeX Rendering:** Code highlighting and complex math equations render beautifully right inside the chat.
 
 ---
 
-## 📸 Screenshots / تصاویر
+## 🖼️ Screenshots
 
 > *Placeholders for screenshots - Add your images here!*
 
-| ☀️ Light Mode | 🌙 Dark Mode |
-| :---: | :---: |
-| ![Light Mode](https://via.placeholder.com/600x400?text=Light+Mode+Screenshot) | ![Dark Mode](https://via.placeholder.com/600x400?text=Dark+Mode+Screenshot) |
+<p align="center">
+  <img src="https://via.placeholder.com/600x400?text=Light+Mode+Screenshot" alt="Light Mode Screenshot" width="45%" />
+  &nbsp;
+  <img src="https://via.placeholder.com/600x400?text=Dark+Mode+Screenshot" alt="Dark Mode Screenshot" width="45%" />
+</p>
 
 ---
 
-## ⚙️ How It Works / نحوه کارکرد
-
-```mermaid
-graph LR
-    U[User] -->|Upload PDF / Send Chat| F[Next.js Frontend]
-    F -->|REST API| B[FastAPI Backend]
-    B -->|Chunking & Embedding| V[(ChromaDB Vector Store)]
-    V -.->|Context Retrieval| B
-    B -->|Prompt + Context| AI[OpenRouter API]
-    AI -->|LLM Response| B
-    B -->|Return Answer| F
-```
-
----
-
-## 🚀 Installation & Setup / راه‌اندازی
+## 🚀 Quick Start
 
 ### 1. Clone the repository
 ```bash
@@ -78,9 +57,6 @@ cd backend
 python -m venv venv
 source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
-```
-Run the backend server:
-```bash
 uvicorn main:app --reload
 ```
 
@@ -93,7 +69,7 @@ npm run dev
 
 ---
 
-## 🔐 Environment Variables / متغیرهای محیطی
+## ⚙️ Environment Variables
 
 ### Backend (`/backend/.env`)
 | Variable | Description |
@@ -109,7 +85,7 @@ npm run dev
 
 ---
 
-## 📂 Project Structure / ساختار پروژه
+## 📁 Project Structure
 
 ```text
 porsesh-ai/
@@ -128,25 +104,172 @@ porsesh-ai/
 
 ---
 
-## 🤝 Contributing / مشارکت
+## 🔧 How It Works
 
-Contributions, issues, and feature requests are welcome! 
-Feel free to check the [issues page](https://github.com/m-mohammadimanesh/porsesh-ai/issues).
+```text
+[ User ] --(Uploads PDF / Chats)--> [ Next.js Frontend ]
+                                            |
+                                       (REST API)
+                                            v
+[ ChromaDB ] <--(Vector Context)-- [ FastAPI Backend ]
+                                            |
+                                    (Prompt + Context)
+                                            v
+                                 [ OpenRouter API (AI) ]
+```
 
 ---
 
-## 📄 License / مجوز
+## 📄 License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ---
 
-## 📬 Contact / ارتباط
+## 👤 Author/Contact
 
 **Mohammad**  
 - GitHub: [@m-mohammadimanesh](https://github.com/m-mohammadimanesh)
 - Project Link: [https://porsesh-ai.vercel.app](https://porsesh-ai.vercel.app)
 
-<div align="center">
-  <i>If you found this project helpful, please give it a ⭐️!</i>
+<br><br>
+
+<a name="persian"></a>
+---
+---
+
+> 🌐 زبان: [English](#) | **فارسی**
+
+<div align="center" dir="rtl">
+
+# 🤖 پرسش AI
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://porsesh-ai.vercel.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/m-mohammadimanesh/porsesh-ai)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+
+</div>
+
+<div dir="rtl">
+
+پرسش AI یک دستیار هوشمند و تمام‌عیار است که نه تنها امکان چت پیشرفته و لحظه‌ای را با استفاده از مدل‌های قدرتمند OpenRouter (مدل Nvidia Nemotron Ultra) فراهم می‌کند، بلکه به لطف سیستم **RAG** با استفاده از ChromaDB، امکان آپلود فایل‌های PDF و استخراج مستقیم پاسخ از محتوای آن‌ها را به شما می‌دهد.
+
+---
+
+## ✨ ویژگی‌ها
+
+- 💬 **چت هوشمند:** گفتگوی لحظه‌ای با هوش مصنوعی قدرتمند با استفاده از API OpenRouter.
+- 📄 **استخراج دانش از PDF:** فایل‌های PDF خود را آپلود کنید و بر اساس محتوای آن مستقیماً سوال بپرسید.
+- 🌓 **حالت تاریک و روشن:** رابط کاربری زیبا و واکنش‌گرا هماهنگ با تنظیمات سیستم.
+- 🌐 **پشتیبانی کامل دوزبانه:** پشتیبانی ساختاری از چیدمان راست‌چین (RTL) و فونت‌های استاندارد فارسی (وزیرمتن) و انگلیسی (Inter).
+- 📝 **پشتیبانی از مارک‌داون و ریاضی:** نمایش زیبای کدهای برنامه‌نویسی و فرمول‌های پیچیده ریاضی با KaTeX در محیط چت.
+
+---
+
+## 🖼️ تصاویر محیط برنامه
+
+> *محل قرارگیری تصاویر - تصاویر خود را اینجا اضافه کنید!*
+
+<p align="center">
+  <img src="https://via.placeholder.com/600x400?text=تصویر+حالت+روشن" alt="تصویر حالت روشن" width="45%" />
+  &nbsp;
+  <img src="https://via.placeholder.com/600x400?text=تصویر+حالت+تاریک" alt="تصویر حالت تاریک" width="45%" />
+</p>
+
+---
+
+## 🚀 راهنمای نصب سریع
+
+### 1. دریافت کدهای پروژه
+```bash
+git clone https://github.com/m-mohammadimanesh/porsesh-ai.git
+cd porsesh-ai
+```
+
+### 2. راه‌اندازی بک‌اند (FastAPI)
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # در ویندوز: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### 3. راه‌اندازی فرانت‌اند (Next.js)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## ⚙️ متغیرهای محیطی
+
+### بک‌اند (`/backend/.env`)
+| متغیر | توضیحات |
+| :--- | :--- |
+| `OPENROUTER_API_KEY` | کلید دسترسی به API هوش مصنوعی OpenRouter |
+| `CHROMA_DB_PATH` | مسیر ذخیره‌سازی داده‌های برداری (مثلاً `./chroma_db`) |
+| `MAX_PDF_SIZE_MB` | حداکثر حجم مجاز برای آپلود PDF (مثلاً `10`) |
+
+### فرانت‌اند (`/frontend/.env.local`)
+| متغیر | توضیحات |
+| :--- | :--- |
+| `NEXT_PUBLIC_API_URL` | آدرس سرور بک‌اند FastAPI (مثلاً `http://localhost:8000`) |
+
+---
+
+## 📁 ساختار پروژه
+
+```text
+porsesh-ai/
+├── backend/                  # بک‌اند با پایتون و FastAPI
+│   ├── models/               # شمای داده‌ها (Pydantic)
+│   ├── services/             # منطق اصلی برنامه (هوش مصنوعی، دیتابیس، PDF)
+│   ├── main.py               # مسیرها و روت‌های API
+│   └── requirements.txt      # کتابخانه‌های پایتون مورد نیاز
+└── frontend/                 # فرانت‌اند با Next.js 14
+    ├── src/
+    │   ├── app/              # روت‌های اصلی و قالب‌بندی
+    │   ├── components/       # اجزای رابط کاربری (پنجره چت، آپلود PDF)
+    │   └── services/         # ارتباط با API
+    └── next.config.mjs       # پیکربندی Next.js
+```
+
+---
+
+## 🔧 نحوه کارکرد
+
+```text
+[ کاربر ] --(آپلود فایل / چت)--> [ فرانت‌اند Next.js ]
+                                         |
+                                     (REST API)
+                                         v
+[ دیتابیس Chroma ] <--(بازیابی زمینه)-- [ بک‌اند FastAPI ]
+                                         |
+                                     (متن + داده‌ها)
+                                         v
+                               [ هوش مصنوعی OpenRouter ]
+```
+
+---
+
+## 📄 مجوز انتشار
+
+این پروژه تحت لایسنس [MIT](https://opensource.org/licenses/MIT) منتشر شده است.
+
+---
+
+## 👤 درباره سازنده
+
+**محمد**  
+- گیت‌هاب: [@m-mohammadimanesh](https://github.com/m-mohammadimanesh)
+- لینک پروژه: [https://porsesh-ai.vercel.app](https://porsesh-ai.vercel.app)
+
 </div>
