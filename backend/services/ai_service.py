@@ -1,22 +1,19 @@
 import os
-from openai import OpenAI
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
+API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 
 if API_KEY and API_KEY != "your_key_here":
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=API_KEY,
-    )
+    client = Groq(api_key=API_KEY)
 else:
     client = None
 
 def generate_answer(query: str, context: list[str]) -> str:
     if client is None:
-        return f"AI service not configured yet. Your question was: {query}"
+        return f"Groq AI service not configured yet. Your question was: {query}"
 
     context_text = "\n\n".join(context)
     prompt = f"""
@@ -31,7 +28,7 @@ User Question:
 """
     try:
         response = client.chat.completions.create(
-            model="nvidia/nemotron-3-ultra-550b-a55b:free",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "user", "content": prompt}
             ]

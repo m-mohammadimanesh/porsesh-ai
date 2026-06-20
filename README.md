@@ -17,13 +17,13 @@
 
 ---
 
-Porsesh AI is a full-stack, AI-powered conversational interface designed to act as your intelligent assistant. Using state-of-the-art models via OpenRouter (powered by Nvidia's Nemotron Ultra) and Retrieval-Augmented Generation (RAG) with ChromaDB, it allows you to upload any PDF document and instantly ask questions about its content.
+Porsesh AI is a full-stack, AI-powered conversational interface designed to act as your intelligent assistant. Using state-of-the-art models via Groq (powered by LLaMA 3.3 70B) and Retrieval-Augmented Generation (RAG) with ChromaDB, it allows you to upload any PDF document and instantly ask questions about its content.
 
 ---
 
 ## ✨ Features
 
-- 💬 **Intelligent Chat:** Real-time conversational AI powered by OpenRouter.
+- 💬 **Intelligent Chat:** Real-time conversational AI powered by Groq.
 - 📄 **PDF Knowledge Extraction:** Upload PDFs and ask targeted questions based on the document's content using ChromaDB vector search.
 - 🌓 **Dark & Light Mode:** Beautiful and responsive UI adapting to system preferences.
 - 🌐 **Bilingual Support:** Built-in support for right-to-left (RTL) Persian typography (Vazirmatn) and English (Inter).
@@ -113,7 +113,7 @@ porsesh-ai/
                                             |
                                     (Prompt + Context)
                                             v
-                                 [ OpenRouter API (AI) ]
+                                 [ Groq API (AI) ]
 ```
 
 ---
@@ -155,13 +155,13 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 <div dir="rtl">
 
-پرسش AI یک دستیار هوشمند و تمام‌عیار است که نه تنها امکان چت پیشرفته و لحظه‌ای را با استفاده از مدل‌های قدرتمند OpenRouter (مدل Nvidia Nemotron Ultra) فراهم می‌کند، بلکه به لطف سیستم **RAG** با استفاده از ChromaDB، امکان آپلود فایل‌های PDF و استخراج مستقیم پاسخ از محتوای آن‌ها را به شما می‌دهد.
+پرسش AI یک دستیار هوشمند و تمام‌عیار است که نه تنها امکان چت پیشرفته و لحظه‌ای را با استفاده از مدل‌های قدرتمند Groq (مدل LLaMA 3.3 70B) فراهم می‌کند، بلکه به لطف سیستم **RAG** با استفاده از ChromaDB، امکان آپلود فایل‌های PDF و استخراج مستقیم پاسخ از محتوای آن‌ها را به شما می‌دهد.
 
 ---
 
 ## ✨ ویژگی‌ها
 
-- 💬 **چت هوشمند:** گفتگوی لحظه‌ای با هوش مصنوعی قدرتمند با استفاده از API OpenRouter.
+- 💬 **چت هوشمند:** گفتگوی لحظه‌ای با هوش مصنوعی قدرتمند با استفاده از API Groq.
 - 📄 **استخراج دانش از PDF:** فایل‌های PDF خود را آپلود کنید و بر اساس محتوای آن مستقیماً سوال بپرسید.
 - 🌓 **حالت تاریک و روشن:** رابط کاربری زیبا و واکنش‌گرا هماهنگ با تنظیمات سیستم.
 - 🌐 **پشتیبانی کامل دوزبانه:** پشتیبانی ساختاری از چیدمان راست‌چین (RTL) و فونت‌های استاندارد فارسی (وزیرمتن) و انگلیسی (Inter).
@@ -252,7 +252,7 @@ porsesh-ai/
                                          |
                                      (متن + داده‌ها)
                                          v
-                               [ هوش مصنوعی OpenRouter ]
+                               [ هوش مصنوعی Groq ]
 ```
 
 ---
