@@ -141,3 +141,18 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# ChromaDB local database
+backend/chroma_db/
+
+# Virtual environment
+backend/venv/
+
+# Environment files
+backend/.env
+frontend/.env.local
