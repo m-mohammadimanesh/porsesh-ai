@@ -47,8 +47,12 @@ export default function PDFUploader({ onUploadSuccess }: PDFUploaderProps) {
     try {
       const res = await uploadPDF(file);
       onUploadSuccess(res.filename);
-    } catch (err: any) {
-      setError(err.message || 'Failed to upload PDF.');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to upload PDF.');
+      }
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {

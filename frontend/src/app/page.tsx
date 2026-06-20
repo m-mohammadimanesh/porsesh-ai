@@ -54,7 +54,7 @@ export default function Home() {
         sender: 'ai' 
       };
       setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
+    } catch (_error) {
       const errorMessage: Message = { 
         id: (Date.now() + 1).toString(), 
         text: 'Error: Failed to get response from AI. Please try again.', 
