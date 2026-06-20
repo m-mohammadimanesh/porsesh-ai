@@ -171,7 +171,6 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## 🖼️ تصاویر محیط برنامه
 
-> *محل قرارگیری تصاویر - تصاویر خود را اینجا اضافه کنید!*
 
 <p align="center">
   <img src="./screenshots/lightmode.png" alt="تصویر حالت روشن" width="45%" />
