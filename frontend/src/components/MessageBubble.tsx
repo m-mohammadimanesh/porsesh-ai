@@ -1,5 +1,7 @@
 import { Message } from '@/types';
 import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 interface MessageBubbleProps {
   message: Message;
@@ -29,7 +31,12 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           [&>h2]:text-lg [&>h2]:font-semibold [&>h2]:mb-3 [&>h2]:mt-4
           [&>h3]:text-base [&>h3]:font-semibold [&>h3]:mb-2 [&>h3]:mt-3
           [&>blockquote]:border-s-4 [&>blockquote]:border-slate-300 [&>blockquote]:dark:border-slate-600 [&>blockquote]:ps-4 [&>blockquote]:italic [&>blockquote]:my-3">
-          <ReactMarkdown>{message.text}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+          >
+            {message.text}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
