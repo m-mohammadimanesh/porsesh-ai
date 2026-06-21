@@ -15,6 +15,8 @@ def generate_answer(query: str, context: list[str], history: list = []) -> str:
     if client is None:
         return f"Groq AI service not configured yet. Your question was: {query}"
 
+    print(f"Received history length: {len(history)}")
+
     context_text = "\n\n".join(context)
     prompt = f"""
 You are an intelligent assistant. Use the following context to answer the user's question.
@@ -30,7 +32,7 @@ User Question:
     messages = []
     messages.append({
         "role": "system",
-        "content": "You are Porsesh AI, an intelligent assistant."
+        "content": "You are Porsesh AI. You have memory of this conversation. Use the conversation history to answer coherently."
     })
     
     for item in history:

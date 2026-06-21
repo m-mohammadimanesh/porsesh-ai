@@ -62,6 +62,8 @@ export default function Home() {
         content: m.text
       }));
 
+    console.log('Sending history:', history);
+
     const userMessage: Message = { id: Date.now().toString(), text, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
