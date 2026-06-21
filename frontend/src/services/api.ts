@@ -1,18 +1,39 @@
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
 
-export async function uploadPDF(file: File, session_id: string) {
+export async function checkHealth() {
+    try {
+        const response = await fetch(`${API_URL}/health`, { method: 'GET' });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
+
+const fetchWithRetry = async (url: string, options: RequestInit, onRetry?: () => void, retries = 1, delay = 3000): Promise<Response> => {
+    try {
+        const res = await fetch(url, options);
+        if (!res.ok) throw new Error('Request failed');
+        return res;
+    } catch (err) {
+        if (retries > 0) {
+            if (onRetry) onRetry();
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return fetchWithRetry(url, options, onRetry, retries - 1, delay);
+        }
+        throw err;
+    }
+};
+
+export async function uploadPDF(file: File, session_id: string, onRetry?: () => void) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('session_id', session_id);
     
-    const response = await fetch(`${API_URL}/upload`, {
+    const response = await fetchWithRetry(`${API_URL}/upload`, {
         method: 'POST',
         body: formData,
-    });
+    }, onRetry);
     
-    if (!response.ok) {
-        throw new Error('Failed to upload PDF');
-    }
     return response.json();
 }
 
@@ -25,18 +46,15 @@ export async function clearSession(session_id: string) {
     }
 }
 
-export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = []) {
+export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = [], onRetry?: () => void) {
     console.log('API Request History:', history);
-    const response = await fetch(`${API_URL}/chat`, {
+    const response = await fetchWithRetry(`${API_URL}/chat`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ message, session_id, history }),
-    });
+    }, onRetry);
     
-    if (!response.ok) {
-        throw new Error('Failed to send message');
-    }
     return response.json();
 }

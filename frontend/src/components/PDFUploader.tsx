@@ -4,9 +4,10 @@ import { uploadPDF } from '@/services/api';
 interface PDFUploaderProps {
   onUploadSuccess: (filename: string) => void;
   sessionId: string;
+  onRetry?: () => void;
 }
 
-export default function PDFUploader({ onUploadSuccess, sessionId }: PDFUploaderProps) {
+export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDFUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +47,7 @@ export default function PDFUploader({ onUploadSuccess, sessionId }: PDFUploaderP
     setError(null);
     setIsUploading(true);
     try {
-      const res = await uploadPDF(file, sessionId);
+      const res = await uploadPDF(file, sessionId, onRetry);
       onUploadSuccess(res.filename);
     } catch (err: unknown) {
       if (err instanceof Error) {

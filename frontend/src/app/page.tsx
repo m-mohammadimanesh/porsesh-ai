@@ -5,7 +5,7 @@ import ChatWindow from '@/components/ChatWindow';
 import ChatInput from '@/components/ChatInput';
 import PDFUploader from '@/components/PDFUploader';
 import Footer from '@/components/Footer';
-import { sendMessage, clearSession } from '@/services/api';
+import { sendMessage, clearSession, checkHealth } from '@/services/api';
 import { Message } from '@/types';
 
 const INITIAL_MESSAGE: Message = {
@@ -21,6 +21,7 @@ export default function Home() {
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [systemMessage, setSystemMessage] = useState<string | null>(null);
 
   useEffect(() => {
     // Generate simple session ID
@@ -32,6 +33,18 @@ export default function Home() {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
+
+    // Ping backend on load to wake it up
+    const wakeBackend = async () => {
+      const timer = setTimeout(() => setSystemMessage("در حال اتصال به سرور... لطفاً چند ثانیه صبر کنید | Connecting to server, please wait..."), 500);
+      try {
+        await checkHealth();
+      } finally {
+        clearTimeout(timer);
+        setSystemMessage(null);
+      }
+    };
+    wakeBackend();
 
     // Cleanup session on unload
     const handleBeforeUnload = () => {
@@ -69,8 +82,11 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(text, sessionId, history);
-      const aiMessage: Message = { 
+      const response = await sendMessage(text, sessionId, history, () => {
+        setSystemMessage("در حال تلاش مجدد... | Retrying connection...");
+      });
+      setSystemMessage(null);
+      const aiMessage: Message = {  
         id: (Date.now() + 1).toString(), 
         text: response.answer, 
         sender: 'ai' 
@@ -90,6 +106,11 @@ export default function Home() {
 
   return (
     <div className={`flex h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 ${isDarkMode ? 'dark' : ''}`}>
+      {systemMessage && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-blue-600 text-white text-center py-2 px-4 text-sm font-medium shadow-md animate-pulse">
+          {systemMessage}
+        </div>
+      )}
       {/* Sidebar for Desktop / Hidden on mobile by default */}
       <div className={`fixed inset-y-0 left-0 z-40 w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:block ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="h-full flex flex-col p-6">
@@ -108,7 +129,9 @@ export default function Home() {
                   await clearSession(sessionId);
                 }
                 setUploadedFile(filename);
+                setSystemMessage(null);
               }} 
+              onRetry={() => setSystemMessage("در حال تلاش مجدد... | Retrying connection...")}
             />
           </div>
           
