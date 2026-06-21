@@ -5,7 +5,7 @@ import ChatWindow from '@/components/ChatWindow';
 import ChatInput from '@/components/ChatInput';
 import PDFUploader from '@/components/PDFUploader';
 import Footer from '@/components/Footer';
-import { sendMessage } from '@/services/api';
+import { sendMessage, clearSession } from '@/services/api';
 import { Message } from '@/types';
 
 const INITIAL_MESSAGE: Message = {
@@ -24,13 +24,25 @@ export default function Home() {
 
   useEffect(() => {
     // Generate simple session ID
-    setSessionId(Math.random().toString(36).substring(7));
+    const newSessionId = Math.random().toString(36).substring(7);
+    setSessionId(newSessionId);
     
     // Check system dark mode preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
+
+    // Cleanup session on unload
+    const handleBeforeUnload = () => {
+      clearSession(newSessionId);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      clearSession(newSessionId);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   const toggleDarkMode = () => {
@@ -87,7 +99,15 @@ export default function Home() {
           </div>
           
           <div className="mb-6">
-            <PDFUploader onUploadSuccess={setUploadedFile} />
+            <PDFUploader 
+              sessionId={sessionId}
+              onUploadSuccess={async (filename) => {
+                if (uploadedFile) {
+                  await clearSession(sessionId);
+                }
+                setUploadedFile(filename);
+              }} 
+            />
           </div>
           
           {uploadedFile && (

@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -30,7 +30,7 @@ def health_check():
     return {"status": "ok"}
 
 @app.post("/upload", response_model=UploadResponse)
-async def upload_pdf(file: UploadFile = File(...)):
+async def upload_pdf(file: UploadFile = File(...), session_id: str = Form(...)):
     if not file.filename.endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are allowed")
     
@@ -41,7 +41,7 @@ async def upload_pdf(file: UploadFile = File(...)):
     try:
         text = pdf_service.extract_text_from_pdf(content)
         chunks = pdf_service.chunk_text(text)
-        vector_service.store_chunks(chunks, source=file.filename)
+        vector_service.store_chunks(chunks, source=file.filename, session_id=session_id)
         
         return UploadResponse(
             status="success",
@@ -55,12 +55,20 @@ async def upload_pdf(file: UploadFile = File(...)):
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        context_chunks = vector_service.query_similar_chunks(request.message)
+        context_chunks = vector_service.query_similar_chunks(request.message, request.session_id)
         answer = ai_service.generate_answer(request.message, context_chunks, request.history)
         
         return ChatResponse(
             answer=answer,
             session_id=request.session_id
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/session/{session_id}")
+def clear_session(session_id: str):
+    try:
+        vector_service.clear_session(session_id)
+        return {"status": "success"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
