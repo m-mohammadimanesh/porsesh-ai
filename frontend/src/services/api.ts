@@ -25,44 +25,17 @@ const fetchWithRetry = async (url: string, options: RequestInit, onRetry?: () =>
 };
 
 export async function uploadPDF(file: File, session_id: string, onRetry?: () => void) {
+    console.log('Uploading PDF...');
     const formData = new FormData();
     formData.append('file', file);
     formData.append('session_id', session_id);
     
-    let lastError: Error | null = null;
-    const maxRetries = 2;
-    const retryDelay = 2000;
+    const response = await fetchWithRetry(`${API_URL}/upload`, {
+        method: 'POST',
+        body: formData,
+    }, onRetry);
     
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 20000);
-        
-        try {
-            if (attempt > 0 && onRetry) onRetry();
-            
-            const response = await fetch(`${API_URL}/upload`, {
-                method: 'POST',
-                body: formData,
-                signal: controller.signal,
-            });
-            
-            clearTimeout(timeoutId);
-            
-            if (!response.ok) {
-                throw new Error('Failed to upload PDF');
-            }
-            return await response.json();
-        } catch (err) {
-            clearTimeout(timeoutId);
-            lastError = err instanceof Error ? err : new Error(String(err));
-            
-            if (attempt < maxRetries) {
-                await new Promise(resolve => setTimeout(resolve, retryDelay));
-            }
-        }
-    }
-    
-    throw lastError;
+    return response.json();
 }
 
 export async function clearSession(session_id: string) {
