@@ -5,3 +5,4 @@ groq
 chromadb
 pypdf2
 python-multipart
+pysqlite3-binary
