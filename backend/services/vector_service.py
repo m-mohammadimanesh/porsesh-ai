@@ -30,15 +30,24 @@ def store_chunks(chunks: list[str], source: str, session_id: str):
         ids=ids
     )
 
-def query_similar_chunks(query: str, session_id: str, n_results: int = 5) -> list[str]:
+def query_similar_chunks(query: str, session_id: str, active_files: list[str] = None, n_results: int = 5) -> list[str]:
     if not collection:
         return []
         
+    where_clause = {"session_id": session_id}
+    if active_files is not None:
+        if len(active_files) == 0:
+            return []  # No active files means no context to return
+        elif len(active_files) == 1:
+            where_clause = {"$and": [{"session_id": session_id}, {"source": active_files[0]}]}
+        else:
+            where_clause = {"$and": [{"session_id": session_id}, {"source": {"$in": active_files}}]}
+            
     try:
         results = collection.query(
             query_texts=[query],
             n_results=n_results,
-            where={"session_id": session_id}
+            where=where_clause
         )
         if results['documents'] and len(results['documents']) > 0:
             docs = results['documents'][0]
