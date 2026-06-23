@@ -27,7 +27,7 @@ def store_chunks(chunks: list[str], source: str, session_id: str):
         ids=ids
     )
 
-def query_similar_chunks(query: str, session_id: str, n_results: int = 3) -> list[str]:
+def query_similar_chunks(query: str, session_id: str, n_results: int = 5) -> list[str]:
     if not collection:
         return []
         
@@ -38,11 +38,35 @@ def query_similar_chunks(query: str, session_id: str, n_results: int = 3) -> lis
             where={"session_id": session_id}
         )
         if results['documents'] and len(results['documents']) > 0:
-            return results['documents'][0]
+            docs = results['documents'][0]
+            metas = results['metadatas'][0] if 'metadatas' in results and results['metadatas'] else [{}] * len(docs)
+            
+            formatted_chunks = []
+            for doc, meta in zip(docs, metas):
+                source = meta.get('source', 'Unknown File')
+                formatted = f"---\nSOURCE DOCUMENT: \"{source}\"\n{doc}\n---"
+                formatted_chunks.append(formatted)
+                
+            return formatted_chunks
     except Exception as e:
         print(f"Error querying ChromaDB: {e}")
         
     return []
+
+def delete_file(session_id: str, source: str):
+    if not collection:
+        return
+    try:
+        collection.delete(
+            where={
+                "$and": [
+                    {"session_id": session_id},
+                    {"source": source}
+                ]
+            }
+        )
+    except Exception as e:
+        print(f"Error deleting file from ChromaDB: {e}")
 
 def clear_session(session_id: str):
     if not collection:

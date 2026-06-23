@@ -7,12 +7,12 @@ import ChatWindow from '@/components/ChatWindow';
 import ChatInput from '@/components/ChatInput';
 import PDFUploader from '@/components/PDFUploader';
 import Footer from '@/components/Footer';
-import { sendMessage, clearSession, checkHealth } from '@/services/api';
+import { sendMessage, clearSession, checkHealth, deleteFile } from '@/services/api';
 import { Message } from '@/types';
 
 const INITIAL_MESSAGE: Message = {
   id: 'init-1',
-  text: 'Hello! I am Porsesh AI, a professional AI chatbot. You can chat with me or upload a PDF document and ask questions about it.',
+  text: 'Hello! I am Porsesh AI, a professional AI chatbot. You can chat with me or upload PDF documents and ask questions about them.',
   sender: 'ai'
 };
 
@@ -20,7 +20,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState('');
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<{id: string, name: string}[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [systemMessage, setSystemMessage] = useState<string | null>(null);
@@ -66,6 +66,15 @@ export default function Home() {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const handleDeleteFile = async (filename: string) => {
+    try {
+      await deleteFile(sessionId, filename);
+      setUploadedFiles(prev => prev.filter(f => f.name !== filename));
+    } catch (err) {
+      console.error("Failed to delete file", err);
     }
   };
 
@@ -127,20 +136,30 @@ export default function Home() {
             <PDFUploader 
               sessionId={sessionId}
               onUploadSuccess={(filename) => {
-                setUploadedFile(filename);
+                setUploadedFiles(prev => {
+                  if (prev.find(f => f.name === filename)) return prev;
+                  return [...prev, { id: Math.random().toString(36).substring(7), name: filename }];
+                });
                 setSystemMessage(null);
               }} 
               onRetry={() => setSystemMessage("Retrying connection...")}
             />
           </div>
           
-          {uploadedFile && (
-            <div className="mb-6 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl flex items-start gap-3 border border-blue-100 dark:border-blue-800/50 shadow-sm transition-all">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
-               <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-100">Active Document</p>
-                  <p className="text-xs text-blue-700/80 dark:text-blue-300/80 truncate mt-0.5" title={uploadedFile}>{uploadedFile}</p>
-               </div>
+          {uploadedFiles.length > 0 && (
+            <div className="mb-6 space-y-2">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Active Documents</p>
+              {uploadedFiles.map(file => (
+                <div key={file.id} className="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl flex items-center justify-between gap-3 border border-blue-100 dark:border-blue-800/50 shadow-sm transition-all">
+                   <div className="flex items-center gap-2 overflow-hidden">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                     <p className="text-xs text-blue-800 dark:text-blue-200 truncate" title={file.name}>{file.name}</p>
+                   </div>
+                   <button onClick={() => handleDeleteFile(file.name)} className="p-1 hover:bg-blue-200/50 dark:hover:bg-blue-800/50 rounded-md text-blue-600 dark:text-blue-400 transition-colors" title="Remove file">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                   </button>
+                </div>
+              ))}
             </div>
           )}
           

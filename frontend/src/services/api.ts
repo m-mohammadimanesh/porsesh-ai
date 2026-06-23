@@ -47,6 +47,15 @@ export async function clearSession(session_id: string) {
     }
 }
 
+export async function deleteFile(session_id: string, filename: string) {
+    const response = await fetch(`${API_URL}/session/${session_id}/file/${encodeURIComponent(filename)}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        console.error('Failed to delete file');
+    }
+}
+
 export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = [], onRetry?: () => void) {
     console.log('API Request History:', history);
     const response = await fetchWithRetry(`${API_URL}/chat`, {
