@@ -61,7 +61,7 @@ async def chat(request: ChatRequest):
     try:
         print(f"Chat endpoint received history length: {len(request.history)}")
         context_chunks = vector_service.query_similar_chunks(request.message, request.session_id)
-        answer = ai_service.generate_answer(request.message, context_chunks, request.history)
+        answer = ai_service.generate_answer(request.message, context_chunks, request.history, request.active_files)
         
         return ChatResponse(
             answer=answer,

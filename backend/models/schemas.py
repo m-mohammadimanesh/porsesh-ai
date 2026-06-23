@@ -9,6 +9,7 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str
     history: List[MessageItem] = []
+    active_files: List[str] = []
 
 class ChatResponse(BaseModel):
     answer: str

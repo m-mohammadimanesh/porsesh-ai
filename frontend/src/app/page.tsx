@@ -93,7 +93,7 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(text, sessionId, history, () => {
+      const response = await sendMessage(text, sessionId, history, uploadedFiles.map(f => f.name), () => {
         setSystemMessage("Retrying connection...");
       });
       setSystemMessage(null);
