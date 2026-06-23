@@ -14,12 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-['Plus_Jakarta_Sans',sans-serif] antialiased tracking-tight text-slate-200 selection:bg-blue-500 selection:text-white">
+      <body className="font-sans antialiased tracking-tight selection:bg-blue-500 selection:text-white">
         {children}
       </body>
     </html>
