@@ -21,7 +21,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         }`}
         dir="auto"
       >
-        <div className="whitespace-pre-wrap break-words prose-p:my-1 prose-br:hidden prose-li:my-0
+        <div className="break-words prose-p:my-1 prose-br:hidden prose-li:my-0
           [&>p]:my-1 [&>p:last-child]:mb-0 
           [&>ul]:list-disc [&>ul]:ps-6 [&>ul]:my-1 [&>ul:last-child]:mb-0
           [&>ol]:list-decimal [&>ol]:ps-6 [&>ol]:my-1 [&>ol:last-child]:mb-0
