@@ -12,7 +12,23 @@ function CodeBlock({ language, code }: { language: string, code: string }) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(code);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(code);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = code;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+        } finally {
+          textArea.remove();
+        }
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {

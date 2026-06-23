@@ -6,6 +6,9 @@ load_dotenv()
 
 CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./chroma_db")
 
+if CHROMA_DB_PATH == "./chroma_db" and os.getenv("NODE_ENV", "development") == "production":
+    print("CRITICAL WARNING: Using local './chroma_db' in production. This will lead to data loss on ephemeral cloud instances (Vercel/Render). Please mount a persistent volume and set CHROMA_DB_PATH.")
+
 try:
     client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
     collection = client.get_or_create_collection(name="pdf_documents")

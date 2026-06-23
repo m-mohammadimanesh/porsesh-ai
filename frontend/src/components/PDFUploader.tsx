@@ -44,6 +44,13 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
       setError('Please upload a valid PDF file.');
       return;
     }
+    
+    const MAX_SIZE_MB = 10;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setError(`File is too large. Maximum allowed size is ${MAX_SIZE_MB}MB.`);
+      return;
+    }
+
     setError(null);
     setIsUploading(true);
     try {

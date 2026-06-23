@@ -38,9 +38,18 @@ async def upload_pdf(file: UploadFile = File(...), session_id: str = Form(...)):
     if not file.filename.endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are allowed")
     
-    content = await file.read()
-    if len(content) > MAX_PDF_SIZE_MB * 1024 * 1024:
-        raise HTTPException(status_code=400, detail=f"File too large. Max size is {MAX_PDF_SIZE_MB}MB")
+    MAX_BYTES = MAX_PDF_SIZE_MB * 1024 * 1024
+    content_bytearray = bytearray()
+    
+    while True:
+        chunk = await file.read(1024 * 1024) # Read in 1MB chunks
+        if not chunk:
+            break
+        content_bytearray.extend(chunk)
+        if len(content_bytearray) > MAX_BYTES:
+            raise HTTPException(status_code=400, detail=f"File too large. Max size is {MAX_PDF_SIZE_MB}MB")
+            
+    content = bytes(content_bytearray)
 
     try:
         text = pdf_service.extract_text_from_pdf(content)
