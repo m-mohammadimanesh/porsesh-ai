@@ -21,10 +21,10 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         }`}
         dir="auto"
       >
-        <div className="whitespace-pre-wrap break-words 
-          [&>p]:mb-2 [&>p:last-child]:mb-0 
-          [&>ul]:list-disc [&>ul]:ps-6 [&>ul]:mb-2 [&>ul:last-child]:mb-0
-          [&>ol]:list-decimal [&>ol]:ps-6 [&>ol]:mb-2 [&>ol:last-child]:mb-0
+        <div className="whitespace-pre-wrap break-words prose-p:my-1 prose-br:hidden prose-li:my-0
+          [&>p]:my-1 [&>p:last-child]:mb-0 
+          [&>ul]:list-disc [&>ul]:ps-6 [&>ul]:my-1 [&>ul:last-child]:mb-0
+          [&>ol]:list-decimal [&>ol]:ps-6 [&>ol]:my-1 [&>ol:last-child]:mb-0
           [&>pre]:bg-slate-900 [&>pre]:text-slate-50 [&>pre]:dark:bg-slate-950 [&>pre]:p-4 [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:my-3 [&>pre]:text-sm
           [&>code]:bg-black/5 [&>code]:dark:bg-white/10 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded-md [&>code]:text-[0.9em]
           [&>pre>code]:bg-transparent [&>pre>code]:p-0 [&>pre>code]:text-[inherit]

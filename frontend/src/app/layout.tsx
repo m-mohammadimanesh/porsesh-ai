@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased selection:bg-blue-500 selection:text-white">
+      <body className="font-[-apple-system,BlinkMacSystemFont,'Segoe_UI',Roboto,Helvetica,Arial,sans-serif] antialiased tracking-tight text-slate-800 selection:bg-blue-500 selection:text-white">
         {children}
       </body>
     </html>
