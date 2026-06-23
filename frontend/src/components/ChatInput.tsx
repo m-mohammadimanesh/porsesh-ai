@@ -21,7 +21,7 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
       <input
         type="text"
         className="flex-1 px-4 py-3 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
-        placeholder="Type your message here... / پیام خود را بنویسید..."
+        placeholder="Type your message here..."
         value={text}
         onChange={(e) => setText(e.target.value)}
         disabled={isLoading}

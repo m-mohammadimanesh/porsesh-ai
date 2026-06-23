@@ -10,7 +10,7 @@ import { Message } from '@/types';
 
 const INITIAL_MESSAGE: Message = {
   id: 'init-1',
-  text: 'Hello! I am Porsesh AI, a professional AI chatbot. You can chat with me or upload a PDF document and ask questions about it.\n\nسلام! من پرسش هوش مصنوعی هستم. می‌توانید با من چت کنید یا یک فایل PDF آپلود کرده و درباره آن سوال بپرسید.',
+  text: 'Hello! I am Porsesh AI, a professional AI chatbot. You can chat with me or upload a PDF document and ask questions about it.',
   sender: 'ai'
 };
 
@@ -36,7 +36,7 @@ export default function Home() {
 
     // Ping backend on load to wake it up
     const wakeBackend = async () => {
-      const timer = setTimeout(() => setSystemMessage("در حال اتصال به سرور... لطفاً چند ثانیه صبر کنید | Connecting to server, please wait..."), 500);
+      const timer = setTimeout(() => setSystemMessage("Connecting to server, please wait..."), 500);
       try {
         await checkHealth();
       } finally {
@@ -83,7 +83,7 @@ export default function Home() {
 
     try {
       const response = await sendMessage(text, sessionId, history, () => {
-        setSystemMessage("در حال تلاش مجدد... | Retrying connection...");
+        setSystemMessage("Retrying connection...");
       });
       setSystemMessage(null);
       const aiMessage: Message = {  
@@ -131,7 +131,7 @@ export default function Home() {
                 setUploadedFile(filename);
                 setSystemMessage(null);
               }} 
-              onRetry={() => setSystemMessage("در حال تلاش مجدد... | Retrying connection...")}
+              onRetry={() => setSystemMessage("Retrying connection...")}
             />
           </div>
           
