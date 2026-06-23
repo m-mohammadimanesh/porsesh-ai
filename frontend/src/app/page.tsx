@@ -126,10 +126,7 @@ export default function Home() {
           <div className="mb-6">
             <PDFUploader 
               sessionId={sessionId}
-              onUploadSuccess={async (filename) => {
-                if (uploadedFile) {
-                  await clearSession(sessionId);
-                }
+              onUploadSuccess={(filename) => {
                 setUploadedFile(filename);
                 setSystemMessage(null);
               }} 

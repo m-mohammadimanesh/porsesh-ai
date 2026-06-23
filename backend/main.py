@@ -43,6 +43,9 @@ async def upload_pdf(file: UploadFile = File(...), session_id: str = Form(...)):
         raise HTTPException(status_code=400, detail=f"File too large. Max size is {MAX_PDF_SIZE_MB}MB")
 
     try:
+        # Clear previous documents for this session before storing the new ones
+        vector_service.clear_session(session_id)
+
         text = pdf_service.extract_text_from_pdf(content)
         chunks = pdf_service.chunk_text(text)
         vector_service.store_chunks(chunks, source=file.filename, session_id=session_id)
