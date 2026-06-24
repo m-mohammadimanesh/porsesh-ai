@@ -74,34 +74,6 @@ Context:
             messages=messages,
             temperature=0.1,  # Set low temperature to force deterministic Farsi/English token selection and eliminate language leaks
         )
-        answer = response.choices[0].message.content
-        return clean_foreign_characters(answer)
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error communicating with AI service: {e}"
-
-def clean_foreign_characters(text: str) -> str:
-    if not text:
-        return ""
-    import re
-    
-    # 1. Replace known leaked foreign conjunctions and helper words
-    # Replace Cyrillic 'или' (Russian for 'or') with Farsi 'یا'
-    text = re.sub(r'\bили\b', 'یا', text, flags=re.IGNORECASE)
-    # Replace French 'besoin' with Farsi 'نیاز'
-    text = re.sub(r'\bbesoin\b', 'نیاز', text, flags=re.IGNORECASE)
-    # Replace French 'mais' with Farsi 'اما'
-    text = re.sub(r'\bmais\b', 'اما', text, flags=re.IGNORECASE)
-    # Replace French 'avec' with Farsi 'با'
-    text = re.sub(r'\bavec\b', 'با', text, flags=re.IGNORECASE)
-    # Replace French 'pour' with Farsi 'برای'
-    text = re.sub(r'\bpour\b', 'برای', text, flags=re.IGNORECASE)
-    
-    # 2. Comprehensive Whitelist Character Filter:
-    # Keep ONLY standard Latin (English), Latin-1 Supplement, Persian/Arabic script blocks,
-    # General Punctuation (including ZWNJ \u200c), Currency Symbols, and Mathematical Operators.
-    # Any other characters (CJK, Cyrillic, Hindi, etc.) are comprehensively stripped.
-    non_target_pattern = re.compile(
-        r'[^\u0000-\u007F\u0080-\u00FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u2000-\u206F\u20A0-\u20CF\u2200-\u22FF]'
-    )
-    
-    return non_target_pattern.sub('', text)
