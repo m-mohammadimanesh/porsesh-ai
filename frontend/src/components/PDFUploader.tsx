@@ -42,13 +42,13 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
 
   const handleFile = async (file: File) => {
     if (file.type !== 'application/pdf') {
-      setError('لطفاً یک فایل PDF معتبر آپلود کنید.');
+      setError('Please upload a valid PDF file.');
       return;
     }
     
     const MAX_SIZE_MB = 10;
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-      setError(`حجم فایل بیش از حد مجاز است. حداکثر حجم: ${MAX_SIZE_MB} مگابایت.`);
+      setError(`File is too large. Maximum allowed size is ${MAX_SIZE_MB}MB.`);
       return;
     }
 
@@ -77,7 +77,7 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('خطا در آپلود فایل.');
+        setError('Failed to upload PDF.');
       }
     } finally {
       if (fileInputRef.current) {
@@ -87,7 +87,7 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
   };
 
   return (
-    <div className={`flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border-2 border-dashed transition-all ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-inner' : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500'}`} dir="rtl">
+    <div className={`flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border-2 border-dashed transition-all ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 shadow-inner' : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500'}`}>
       <div 
         className="w-full text-center"
         onDragEnter={handleDrag}
@@ -100,13 +100,13 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
             </svg>
         </div>
-        <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-1">آپلود سند PDF</h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">فایل را اینجا بکشید و رها کنید، یا انتخاب کنید</p>
+        <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-1">Upload PDF Document</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">Drag and drop, or browse</p>
         
         {isUploading ? (
           <div className="w-full max-w-[200px] mx-auto">
             <div className="flex justify-between text-[11px] mb-1.5 text-blue-600 dark:text-blue-400 font-medium px-1">
-              <span>در حال ارسال...</span>
+              <span>Uploading...</span>
               <span className="font-mono">{Math.round(uploadProgress)}%</span>
             </div>
             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden shadow-inner">
@@ -123,7 +123,7 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
             onClick={() => fileInputRef.current?.click()}
             className="px-5 py-2 bg-white dark:bg-slate-700 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all active:scale-95"
           >
-            انتخاب فایل
+            Select File
           </button>
         )}
         
