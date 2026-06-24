@@ -55,24 +55,23 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
     setError(null);
     setIsUploading(true);
     setUploadProgress(0);
-    
-    const progressInterval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 90) return prev;
-        return prev + Math.random() * 15;
-      });
-    }, 400);
 
     try {
-      const res = await uploadPDF(file, sessionId, onRetry);
-      clearInterval(progressInterval);
+      const res = await uploadPDF(
+        file,
+        sessionId,
+        (percent) => {
+          setUploadProgress(percent);
+        },
+        onRetry
+      );
+      
       setUploadProgress(100);
       setTimeout(() => {
         onUploadSuccess(res.filename);
         setIsUploading(false);
       }, 500);
     } catch (err: unknown) {
-      clearInterval(progressInterval);
       setIsUploading(false);
       if (err instanceof Error) {
         setError(err.message);

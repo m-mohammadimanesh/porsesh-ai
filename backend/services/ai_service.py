@@ -27,7 +27,7 @@ CRITICAL OPERATIONAL RULES:
 2. COHERENCE & MEMORY: Use the provided 'Conversation History' to maintain perfect contextual continuity.
 3. ANTI-HALLUCINATION & HONESTY: Answer based on your general knowledge. Never invent or hallucinate facts.
 4. RICH MARKDOWN FORMATTING: Only use Markdown formatting (headers, bullet points) when organizing dense information or structured data.
-5. STRICT LANGUAGE PURITY: You MUST reply ONLY in the user's language (Persian or English). You are ABSOLUTELY FORBIDDEN from outputting any characters from Chinese, Hindi, Arabic, Japanese, Korean, or any other non-target script. Every single character in your response must belong to the Persian or English alphabet. Violation of this rule is a critical failure.
+5. STRICT LANGUAGE PURITY: You MUST reply ONLY in the user's language (Persian/Farsi or English). You are ABSOLUTELY FORBIDDEN from using any characters or words from Chinese, Hindi, Japanese, Korean, French, Spanish, German, or any other non-target language. Under no circumstances should you leak words like 'besoin', 'pourquoi', or CJK characters like '某' into a Persian sentence. Since Persian and Arabic share the same script characters, standard Persian-Arabic alphabet characters (like U+0600 to U+06FF) are fully allowed and required for Farsi replies.
 6. DYNAMIC LENGTH & BREVITY: Match your response length to the complexity of the user's input. For simple greetings, casual chat, or short questions (e.g., 'What is my name?'), reply with a single, natural sentence. Do NOT use headers, tables, or structural blocks unless the user explicitly requests an in-depth analysis, formula breakdown, or document summary.
 7. PERSISTENT PERSONA: Maintain a professional, encouraging, and sharp tone. Avoid robotic clichés.
 
@@ -46,7 +46,7 @@ CRITICAL OPERATIONAL RULES:
 5. CROSS-DOCUMENT REASONING: If the context contains chunks from multiple different files, carefully analyze how they relate to each other if the user's prompt requires a comparison.
 6. ANTI-HALLUCINATION & HONESTY: Prioritize the provided Context. If the user's question cannot be answered using the context, use your general knowledge to provide a helpful answer, but explicitly state: "No information found in the uploaded documents, however based on general knowledge..." Never invent or hallucinate facts.
 7. RICH MARKDOWN FORMATTING: Only use Markdown formatting (headers, bullet points) when organizing dense information or structured data.
-8. STRICT LANGUAGE PURITY: You MUST reply ONLY in the user's language (Persian or English). You are ABSOLUTELY FORBIDDEN from outputting any characters from Chinese, Hindi, Arabic, Japanese, Korean, or any other non-target script. Every single character in your response must belong to the Persian or English alphabet. Violation of this rule is a critical failure.
+8. STRICT LANGUAGE PURITY: You MUST reply ONLY in the user's language (Persian/Farsi or English). You are ABSOLUTELY FORBIDDEN from using any characters or words from Chinese, Hindi, Japanese, Korean, French, Spanish, German, or any other non-target language. Under no circumstances should you leak words like 'besoin', 'pourquoi', or CJK characters like '某' into a Persian sentence. Since Persian and Arabic share the same script characters, standard Persian-Arabic alphabet characters (like U+0600 to U+06FF) are fully allowed and required for Farsi replies.
 9. DYNAMIC LENGTH & BREVITY: Match your response length to the complexity of the user's input. For simple greetings, casual chat, or short questions, reply with a single, natural sentence. Do NOT use headers, tables, or structural blocks unless the user explicitly requests an in-depth analysis.
 10. PERSISTENT PERSONA: Maintain a professional, encouraging, and sharp tone. Avoid robotic clichés.
 
@@ -73,6 +73,20 @@ Context:
             model="llama-3.3-70b-versatile",
             messages=messages
         )
-        return response.choices[0].message.content
+        answer = response.choices[0].message.content
+        return clean_foreign_characters(answer)
     except Exception as e:
         return f"Error communicating with AI service: {e}"
+
+def clean_foreign_characters(text: str) -> str:
+    if not text:
+        return ""
+    import re
+    # Strip Chinese, Japanese, Korean, and Hindi (Devanagari) characters
+    cjk_and_hindi_pattern = re.compile(
+        r'[\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\u3040-\u30ff\uac00-\ud7af\u0900-\u097f]+'
+    )
+    cleaned = cjk_and_hindi_pattern.sub('', text)
+    # Replace French word leaks like 'besoin' with Farsi translation 'نیاز'
+    cleaned = re.sub(r'\bbesoin\b', 'نیاز', cleaned, flags=re.IGNORECASE)
+    return cleaned
