@@ -35,10 +35,11 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         for page in pdf.pages:
             page_text = page.extract_text(layout=True)
             if page_text:
-                # Process line-by-line to correct visual RTL text direction
+                # Process line-by-line to correct visual RTL text direction and filter empty layout rows
                 reconstructed_lines = []
                 for line in page_text.split("\n"):
-                    reconstructed_lines.append(normalize_rtl_line(line))
+                    if line.strip():  # Skip blank and empty space lines to prevent empty DB chunks
+                        reconstructed_lines.append(normalize_rtl_line(line))
                 text += "\n".join(reconstructed_lines) + "\n\n"
     return text
 
