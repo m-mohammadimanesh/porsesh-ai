@@ -105,7 +105,7 @@ export default function PDFUploader({ onUploadSuccess, sessionId, onRetry }: PDF
         {isUploading ? (
           <div className="w-full max-w-[200px] mx-auto">
             <div className="flex justify-between text-[11px] mb-1.5 text-blue-600 dark:text-blue-400 font-medium px-1">
-              <span>Uploading...</span>
+              <span>{uploadProgress >= 99 ? 'Processing...' : 'Uploading...'}</span>
               <span className="font-mono">{Math.round(uploadProgress)}%</span>
             </div>
             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden shadow-inner">
