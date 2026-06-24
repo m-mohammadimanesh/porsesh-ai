@@ -56,14 +56,15 @@ export async function deleteFile(session_id: string, filename: string) {
     }
 }
 
-export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = [], onRetry?: () => void) {
+export async function sendMessage(message: string, session_id: string, history: {role: string, content: string}[] = [], active_files: string[] = [], onRetry?: () => void) {
     console.log('API Request History:', history);
+    console.log('API Active Files:', active_files);
     const response = await fetchWithRetry(`${API_URL}/chat`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message, session_id, history }),
+        body: JSON.stringify({ message, session_id, history, active_files }),
     }, onRetry);
     
     return response.json();
