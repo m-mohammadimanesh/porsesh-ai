@@ -71,7 +71,8 @@ Context:
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=messages
+            messages=messages,
+            temperature=0.1,  # Set low temperature to force deterministic Farsi/English token selection and eliminate language leaks
         )
         answer = response.choices[0].message.content
         return clean_foreign_characters(answer)
