@@ -82,11 +82,25 @@ def clean_foreign_characters(text: str) -> str:
     if not text:
         return ""
     import re
-    # Strip Chinese, Japanese, Korean, and Hindi (Devanagari) characters
-    cjk_and_hindi_pattern = re.compile(
-        r'[\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\u3040-\u30ff\uac00-\ud7af\u0900-\u097f]+'
+    
+    # 1. Replace known leaked foreign conjunctions and words
+    # Replace Cyrillic 'или' (meaning 'or') with Farsi 'یا'
+    text = re.sub(r'\bили\b', 'یا', text, flags=re.IGNORECASE)
+    # Replace French 'besoin' with Farsi 'نیاز'
+    text = re.sub(r'\bbesoin\b', 'نیاز', text, flags=re.IGNORECASE)
+    
+    # 2. Strip CJK (Chinese/Japanese/Korean) characters
+    cjk_pattern = re.compile(
+        r'[\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\u3040-\u30ff\uac00-\ud7af]+'
     )
-    cleaned = cjk_and_hindi_pattern.sub('', text)
-    # Replace French word leaks like 'besoin' with Farsi translation 'نیاز'
-    cleaned = re.sub(r'\bbesoin\b', 'نیاز', cleaned, flags=re.IGNORECASE)
-    return cleaned
+    text = cjk_pattern.sub('', text)
+    
+    # 3. Strip Devanagari/Hindi characters
+    hindi_pattern = re.compile(r'[\u0900-\u097f]+')
+    text = hindi_pattern.sub('', text)
+    
+    # 4. Strip any remaining Cyrillic characters (as a fallback)
+    cyrillic_pattern = re.compile(r'[\u0400-\u04ff\u0500-\u052f]+')
+    text = cyrillic_pattern.sub('', text)
+    
+    return text
