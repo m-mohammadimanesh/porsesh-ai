@@ -52,14 +52,14 @@ async def upload_pdf(file: UploadFile = File(...), session_id: str = Form(...)):
     content = bytes(content_bytearray)
 
     try:
-        text = pdf_service.extract_text_from_pdf(content)
-        chunks = pdf_service.chunk_text(text)
+        pages = pdf_service.extract_pages_from_pdf(content)
+        chunks = pdf_service.chunk_pages(pages)
         vector_service.store_chunks(chunks, source=file.filename, session_id=session_id)
         
         return UploadResponse(
             status="success",
             filename=file.filename,
-            pages=max(1, len(text) // 1500),  # Rough estimate
+            pages=len(pages),  # Actual page count from PDF
             chunks=len(chunks)
         )
     except Exception as e:

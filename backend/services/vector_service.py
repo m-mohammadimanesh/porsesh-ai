@@ -17,20 +17,42 @@ except Exception as e:
     client = None
     collection = None
 
-def store_chunks(chunks: list[str], source: str, session_id: str):
+
+def store_chunks(chunks: list[dict], source: str, session_id: str):
+    """Store page-aware chunks with metadata in ChromaDB.
+    
+    Args:
+        chunks: List of dicts from chunk_pages(), each with keys:
+                text, pages, start_page, end_page
+        source: Original filename (e.g., "report.pdf")
+        session_id: User session identifier
+    """
     if not collection or not chunks:
         return
     
     ids = [f"{session_id}_{source}_{i}" for i in range(len(chunks))]
-    metadatas = [{"source": source, "session_id": session_id} for _ in chunks]
+    documents = [chunk["text"] for chunk in chunks]
+    metadatas = [{
+        "source": source,
+        "session_id": session_id,
+        "pages": chunk.get("pages", ""),
+        "start_page": chunk.get("start_page", 0),
+        "end_page": chunk.get("end_page", 0),
+    } for chunk in chunks]
     
     collection.add(
-        documents=chunks,
+        documents=documents,
         metadatas=metadatas,
         ids=ids
     )
 
-def query_similar_chunks(query: str, session_id: str, active_files: list[str] = None, n_results: int = 5) -> list[str]:
+
+def query_similar_chunks(query: str, session_id: str, active_files: list[str] = None, n_results: int = 8) -> list[str]:
+    """Query similar chunks and return formatted context with source and page info.
+    
+    Returns up to n_results (default: 8) formatted context strings, each tagged
+    with the source document name and page number for the AI to reference.
+    """
     if not collection:
         return []
         
@@ -56,7 +78,9 @@ def query_similar_chunks(query: str, session_id: str, active_files: list[str] = 
             formatted_chunks = []
             for doc, meta in zip(docs, metas):
                 source = meta.get('source', 'Unknown File')
-                formatted = f"---\nSOURCE DOCUMENT: \"{source}\"\n{doc}\n---"
+                pages = meta.get('pages', '')
+                page_info = f" (Page {pages})" if pages else ""
+                formatted = f"---\nSOURCE DOCUMENT: \"{source}\"{page_info}\n{doc}\n---"
                 formatted_chunks.append(formatted)
                 
             return formatted_chunks
@@ -65,7 +89,9 @@ def query_similar_chunks(query: str, session_id: str, active_files: list[str] = 
         
     return []
 
+
 def delete_file(session_id: str, source: str):
+    """Delete all chunks for a specific file from a session."""
     if not collection:
         return
     try:
@@ -80,7 +106,9 @@ def delete_file(session_id: str, source: str):
     except Exception as e:
         print(f"Error deleting file from ChromaDB: {e}")
 
+
 def clear_session(session_id: str):
+    """Delete all chunks for an entire session."""
     if not collection:
         return
     try:
